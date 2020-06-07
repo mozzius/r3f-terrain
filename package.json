@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "description": "Terrain generator, using react-three-fiber",
   "author": "Samuel Newman",
+  "license": "MIT",
   "dependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
