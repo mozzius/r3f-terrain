@@ -2,7 +2,7 @@
 
 A simple Simplex noise terrain generator, built with THREE and react-three-fiber.
 
-[See it here!](https://terrain.mozzius.now.sh). Hosted on Vercel.
+[See it here!](https://terrain.mozzius.now.sh) Hosted on Vercel.
 
 ## How it works
 
@@ -18,5 +18,5 @@ It uses the Create React App template, so simply run:
 
 ```
 > yarn
-> yarn run
+> yarn start
 ```
