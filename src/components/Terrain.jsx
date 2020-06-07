@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useUpdate } from 'react-three-fiber';
+import SimplexNoise from 'simplex-noise';
 
 const generateTerrain = (simplex, size, height, levels, scale, offset) => {
   const noise = (level, x, z) =>
@@ -20,7 +21,16 @@ const generateTerrain = (simplex, size, height, levels, scale, offset) => {
   });
 };
 
-const Terrain = ({ simplex, size, height, levels = 8, scale = 1, offset }) => {
+const Terrain = ({
+  seed,
+  size,
+  height,
+  levels = 8,
+  scale = 1,
+  offset = { x: 0, z: 0 },
+}) => {
+  const simplex = useMemo(() => new SimplexNoise(seed), [seed]);
+
   const geometryRef = useUpdate(
     (geometry) => {
       geometry.vertices = generateTerrain(
@@ -31,8 +41,9 @@ const Terrain = ({ simplex, size, height, levels = 8, scale = 1, offset }) => {
         scale,
         offset
       );
+      geometry.elementsNeedUpdate = true;
     },
-    [size, height, levels, scale, offset]
+    [size, height, levels, scale, offset, seed]
   );
 
   return (

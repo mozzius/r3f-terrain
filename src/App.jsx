@@ -12,7 +12,6 @@ const App = () => {
         <OrbitControls />
         <TerrainManager />
         <ambientLight />
-        {/*<axesHelper args={[1]} />*/}
       </Canvas>
       <Controls />
     </>
