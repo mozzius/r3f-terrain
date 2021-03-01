@@ -11,7 +11,7 @@
     "react-three-fiber": "^4.2.8",
     "react-three-gui": "^0.1.5",
     "simplex-noise": "^2.4.0",
-    "three": "^0.117.1"
+    "three": "^0.125.0"
   },
   "scripts": {
     "start": "react-scripts start",
