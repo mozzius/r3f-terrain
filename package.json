@@ -5,13 +5,13 @@
   "author": "Samuel Newman",
   "license": "MIT",
   "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "react-three-fiber": "^4.2.8",
-    "react-three-gui": "^0.1.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.3",
+    "react-three-fiber": "^5.3.19",
+    "react-three-gui": "^0.4.2",
     "simplex-noise": "^2.4.0",
-    "three": "^0.117.1"
+    "three": "^0.126.1"
   },
   "scripts": {
     "start": "react-scripts start",
