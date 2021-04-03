@@ -1,19 +1,20 @@
 {
   "name": "terrain-fiber",
   "version": "0.1.1",
-  "description": "Terrain generator, using react-three-fiber",
+  "description": "Terrain generator, using @react-three/fiber",
   "author": "Samuel Newman",
   "license": "MIT",
   "dependencies": {
+    "@react-three/fiber": "^6.0.6",
+    "leva": "^0.8.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "react-three-fiber": "^5.3.22",
-    "react-three-gui": "^0.4.2",
     "simplex-noise": "^2.4.0",
     "three": "^0.127.0"
   },
   "scripts": {
+    "dev": "yarn start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

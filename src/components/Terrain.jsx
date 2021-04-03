@@ -1,6 +1,8 @@
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import { useLayoutEffect, useMemo, useRef } from 'react';
 import SimplexNoise from 'simplex-noise';
 import { BufferAttribute } from 'three';
+
+import MountainMaterial from './MountainMaterial';
 
 const generateTerrain = (simplex, size, height, levels, scale, offset) => {
   const noise = (level, x, z) =>
@@ -63,7 +65,7 @@ const Terrain = ({
         args={[undefined, undefined, size - 1, size - 1]}
         ref={ref}
       />
-      <meshBasicMaterial color="black" wireframe />
+      <MountainMaterial />
     </mesh>
   );
 };

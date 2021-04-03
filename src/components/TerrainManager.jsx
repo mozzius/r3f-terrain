@@ -1,51 +1,25 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { button, useControls } from 'leva';
 
 import Terrain from './Terrain';
-import { useControl } from 'react-three-gui';
 
 const TerrainManager = () => {
   const [seed, setSeed] = useState(Date.now());
-  const updateSeed = () => setSeed(Date.now());
 
-  useControl('Generate', {
-    type: 'button',
-    onClick: updateSeed,
-  });
-
-  const size = useControl('Resolution', {
-    type: 'number',
-    value: 50,
-    min: 10,
-    max: 500,
-  });
-
-  const height = useControl('Height', {
-    type: 'number',
-    value: 0.20,
-    min: 0,
-    max: 1,
-  });
-
-  const levels = useControl('Levels', {
-    type: 'number',
-    value: 8,
-    min: 1,
-    max: 20,
-  });
-
-  const scale = useControl('Scale', {
-    type: 'number',
-    value: 2,
-    min: 0.1,
-    max: 20,
+  const { resolution, height, levels, scale } = useControls({
+    generate: button(() => setSeed(Date.now())),
+    resolution: { value: 50, min: 10, max: 500, step: 1 },
+    height: { value: 0.2, min: 0, max: 1 },
+    levels: { value: 8, min: 1, max: 16, step: 1 },
+    scale: { value: 1, min: 1, max: 16, step: 1 },
   });
 
   return (
     <Terrain
       seed={seed}
-      size={Math.floor(size)}
+      size={resolution}
       height={height}
-      levels={Math.floor(levels)}
+      levels={levels}
       scale={scale}
     />
   );
