@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 
-import OrbitControls from './components/Controls';
 import TerrainManager from './components/TerrainManager';
 
 const App = () => {

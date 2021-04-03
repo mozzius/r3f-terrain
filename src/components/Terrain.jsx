@@ -1,8 +1,10 @@
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useControls } from 'leva';
+import { Suspense, useLayoutEffect, useMemo, useRef } from 'react';
 import SimplexNoise from 'simplex-noise';
 import { BufferAttribute } from 'three';
 
 import MountainMaterial from './MountainMaterial';
+import WireframeMaterial from './WireframeMaterial';
 
 const generateTerrain = (simplex, size, height, levels, scale, offset) => {
   const noise = (level, x, z) =>
@@ -57,7 +59,10 @@ const Terrain = ({
       )
     );
     ref.current.elementsNeedUpdate = true;
+    ref.current.computeVertexNormals()
   }, [size, height, levels, scale, offset, simplex]);
+
+  const { wireframe } = useControls({ wireframe: false });
 
   return (
     <mesh>
@@ -65,7 +70,9 @@ const Terrain = ({
         args={[undefined, undefined, size - 1, size - 1]}
         ref={ref}
       />
-      <MountainMaterial />
+      <Suspense fallback={<WireframeMaterial />}>
+        {wireframe ? <WireframeMaterial /> : <MountainMaterial />}
+      </Suspense>
     </mesh>
   );
 };
