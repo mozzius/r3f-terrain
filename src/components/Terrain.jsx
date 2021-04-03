@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { useUpdate } from 'react-three-fiber';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import SimplexNoise from 'simplex-noise';
+import { BufferAttribute } from 'three';
 
 const generateTerrain = (simplex, size, height, levels, scale, offset) => {
   const noise = (level, x, z) =>
@@ -10,14 +10,28 @@ const generateTerrain = (simplex, size, height, levels, scale, offset) => {
     ) /
       level +
     (level > 1 ? noise(level / 2, x, z) : 0);
-  return Array.from({ length: size ** 2 }, (_, i) => {
-    let x = (i % size) / size - 0.5;
-    let z = Math.floor(i / size) / size - 0.5;
-    return {
-      x: (offset.x + x) * scale,
-      y: noise(2 ** levels, x, z) * height,
-      z: (offset.z + z) * scale,
-    };
+  return Float32Array.from({ length: size ** 2 * 3 }, (_, i) => {
+    let v;
+    switch (i % 3) {
+      case 0:
+        v = i / 3;
+        return (offset.x + ((v % size) / size - 0.5)) * scale;
+      case 1:
+        v = (i - 1) / 3;
+        return (
+          noise(
+            2 ** levels,
+            (v % size) / size - 0.5,
+            Math.floor(v / size) / size - 0.5
+          ) * height
+        );
+      case 2:
+        v = (i - 2) / 3;
+        return (offset.z + Math.floor(v / size) / size - 0.5) * scale;
+      default:
+        console.error("I can't do maths");
+        return 0;
+    }
   });
 };
 
@@ -30,30 +44,26 @@ const Terrain = ({
   offset = { x: 0, z: 0 },
 }) => {
   const simplex = useMemo(() => new SimplexNoise(seed), [seed]);
+  const ref = useRef();
 
-  const geometryRef = useUpdate(
-    (geometry) => {
-      geometry.vertices = generateTerrain(
-        simplex,
-        size,
-        height,
-        levels,
-        scale,
-        offset
-      );
-      geometry.elementsNeedUpdate = true;
-    },
-    [size, height, levels, scale, offset, seed]
-  );
+  useLayoutEffect(() => {
+    ref.current.setAttribute(
+      'position',
+      new BufferAttribute(
+        generateTerrain(simplex, size, height, levels, scale, offset),
+        3
+      )
+    );
+    ref.current.elementsNeedUpdate = true;
+  }, [size, height, levels, scale, offset, simplex]);
 
   return (
     <mesh>
       <planeGeometry
-        attach="geometry"
         args={[undefined, undefined, size - 1, size - 1]}
-        ref={geometryRef}
+        ref={ref}
       />
-      <meshBasicMaterial attach="material" color="black" wireframe />
+      <meshBasicMaterial color="black" wireframe />
     </mesh>
   );
 };
