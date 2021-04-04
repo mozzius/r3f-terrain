@@ -14,8 +14,11 @@ const generateTerrain = (simplex, size, height, levels, scale, offset) => {
     ) /
       level +
     (level > 1 ? noise(level / 2, x, z) : 0);
+  // eslint does not trust me
+  // eslint-disable-next-line array-callback-return
   return Float32Array.from({ length: size ** 2 * 3 }, (_, i) => {
     let v;
+    // eslint-disable-next-line default-case
     switch (i % 3) {
       case 0:
         v = i / 3;
@@ -32,9 +35,6 @@ const generateTerrain = (simplex, size, height, levels, scale, offset) => {
       case 2:
         v = (i - 2) / 3;
         return (offset.z + Math.floor(v / size) / size - 0.5) * scale;
-      default:
-        console.error("I can't do maths");
-        return 0;
     }
   });
 };
