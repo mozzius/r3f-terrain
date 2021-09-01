@@ -59,7 +59,7 @@ const Terrain = ({
       )
     );
     ref.current.elementsNeedUpdate = true;
-    ref.current.computeVertexNormals()
+    ref.current.computeVertexNormals();
   }, [size, height, levels, scale, offset, simplex]);
 
   const { wireframe } = useControls({ wireframe: false });
@@ -69,6 +69,8 @@ const Terrain = ({
       <planeGeometry
         args={[undefined, undefined, size - 1, size - 1]}
         ref={ref}
+        castShadow
+        receiveShadow
       />
       <Suspense fallback={<WireframeMaterial />}>
         {wireframe ? <WireframeMaterial /> : <MountainMaterial />}
