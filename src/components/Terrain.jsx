@@ -54,6 +54,16 @@ const Terrain = ({ seed, size, height, levels = 8, scale = 1, offset }) => {
   const southRef = useRef();
   const westRef = useRef();
 
+  const sides = useMemo(
+    () => ({
+      north: new Float32Array(size * 6),
+      east: new Float32Array(size * 6),
+      south: new Float32Array(size * 6),
+      west: new Float32Array(size * 6),
+    }),
+    [size]
+  );
+
   useLayoutEffect(() => {
     const [vertices, lowestPoint] = generateTerrain(
       simplex,
@@ -64,12 +74,6 @@ const Terrain = ({ seed, size, height, levels = 8, scale = 1, offset }) => {
       offset
     );
     setLowestPoint(lowestPoint);
-    const sides = {
-      north: new Float32Array(size * 6),
-      east: new Float32Array(size * 6),
-      south: new Float32Array(size * 6),
-      west: new Float32Array(size * 6),
-    };
     for (let i = 0, j = 0, k = 0, l = 0; i < size ** 2; i++) {
       const [x, y, z] = [
         vertices[i * 3],
@@ -135,7 +139,7 @@ const Terrain = ({ seed, size, height, levels = 8, scale = 1, offset }) => {
       new BufferAttribute(sides.west, 3)
     );
     westRef.current.elementsNeedUpdate = true;
-  }, [size, height, levels, scale, offset, simplex]);
+  }, [size, height, levels, scale, offset, simplex, sides]);
 
   const { wireframe } = useControls({ wireframe: false });
 
@@ -181,8 +185,8 @@ const Terrain = ({ seed, size, height, levels = 8, scale = 1, offset }) => {
       </mesh>
       <mesh // bottom
         rotation-x={Math.PI / 2}
-        position={[-1 / size / 2, lowestPoint, -1 / size / 2]}
-        scale={(size - 1) / size}
+        position={[-scale / size / 2, lowestPoint, -scale / size / 2]}
+        scale={((size - 1) / size) * scale}
       >
         <planeGeometry />
         <meshBasicMaterial color="black" wireframe={wireframe} />
