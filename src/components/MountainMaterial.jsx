@@ -1,13 +1,13 @@
-import { extend, useLoader } from '@react-three/fiber';
-import { shaderMaterial } from '@react-three/drei';
-import { TextureLoader } from 'three';
+import { extend, useLoader } from "@react-three/fiber";
+import { shaderMaterial } from "@react-three/drei";
+import { TextureLoader } from "three";
 
 extend({
   SlopeBlendMaterial: shaderMaterial(
     {
       tFlat: undefined,
       tSlope: undefined,
-      fNormal: { type: 'v3', value: [], boundTo: 'faces' },
+      fNormal: { type: "v3", value: [], boundTo: "faces" },
     },
     `    
     varying vec2 vUv;
@@ -38,8 +38,8 @@ extend({
 
 const MountainMaterial = () => {
   const [flatTexture, slopeTexture] = useLoader(TextureLoader, [
-    '/grass.jpg',
-    '/rock.jpg',
+    "/grass.jpg",
+    "/rock.jpg",
   ]);
 
   return <slopeBlendMaterial tFlat={flatTexture} tSlope={slopeTexture} />;
