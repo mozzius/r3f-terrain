@@ -1,15 +1,16 @@
-import { Suspense, useLayoutEffect, useMemo, useRef, useState } from "react";
-import SimplexNoise from "simplex-noise";
+import { Suspense, useMemo, useRef, useState } from "react";
+import { createNoise2D } from "simplex-noise";
 import { BufferAttribute } from "three";
 import { useControls } from "leva";
 
 import MountainMaterial from "./MountainMaterial";
 import WireframeMaterial from "./WireframeMaterial";
 import { DoubleSide } from "three";
+import { useEffect } from "react";
 
 const generateTerrain = (simplex, size, height, levels, scale, offset) => {
   const noise = (level, x, z) =>
-    simplex.noise2D(
+    simplex(
       offset.x * scale + level * x * scale,
       offset.z * scale + level * z * scale
     ) /
@@ -46,7 +47,8 @@ const generateTerrain = (simplex, size, height, levels, scale, offset) => {
 };
 
 const Terrain = ({ seed, size, height, levels = 8, scale = 1, offset }) => {
-  const simplex = useMemo(() => new SimplexNoise(seed), [seed]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const simplex = useMemo(() => new createNoise2D(), [seed]); // use seed to regenerate simplex noise
   const [lowestPoint, setLowestPoint] = useState(0);
   const ref = useRef();
   const northRef = useRef();
@@ -64,7 +66,7 @@ const Terrain = ({ seed, size, height, levels = 8, scale = 1, offset }) => {
     [size]
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const [vertices, lowestPoint] = generateTerrain(
       simplex,
       size,
